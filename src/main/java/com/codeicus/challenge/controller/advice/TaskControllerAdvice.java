@@ -3,9 +3,6 @@ package com.codeicus.challenge.controller.advice;
 import com.codeicus.challenge.controller.TaskController;
 import com.codeicus.challenge.dto.ErrorResponseDTO;
 import com.codeicus.challenge.exception.*;
-import com.codeicus.challenge.queue.RabbitMessageSender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,11 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(assignableTypes = TaskController.class)
 public class TaskControllerAdvice {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TaskControllerAdvice.class);
-
-    @Autowired
-    private RabbitMessageSender rabbitMessageSender;
 
     @Autowired
     private GlobalExceptionHandler globalExceptionHandler;
