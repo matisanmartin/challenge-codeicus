@@ -12,9 +12,8 @@ public class TaskLog {
     @Column(updatable = false)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id")
-    private Task task;
+    @Column
+    private Long taskId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -31,8 +30,8 @@ public class TaskLog {
 
     }
 
-    public TaskLog(Optional<Task> task, Operation operation, Result result, String description) {
-        this.task = task.orElse(null);
+    public TaskLog(Optional<Long> taskId, Operation operation, Result result, String description) {
+        this.taskId = taskId.orElse(null);
         this.operation = operation;
         this.result = result;
         this.description = description;
@@ -46,12 +45,12 @@ public class TaskLog {
         this.id = id;
     }
 
-    public Task getTask() {
-        return task;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public Result getResult() {

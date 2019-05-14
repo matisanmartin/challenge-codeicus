@@ -3,42 +3,29 @@ package com.codeicus.challenge.service;
 
 import com.codeicus.challenge.dto.TaskDTO;
 import com.codeicus.challenge.dto.UpdateTaskDTO;
+import com.codeicus.challenge.exception.BusinessException;
+import com.codeicus.challenge.exception.NotFoundException;
 import com.codeicus.challenge.model.Action;
 import com.codeicus.challenge.model.Status;
 import com.codeicus.challenge.model.Task;
-import com.codeicus.challenge.queue.RabbitMessageSender;
 import com.google.common.collect.Iterables;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TaskServiceTest {
 
-    @InjectMocks
+    @Autowired
     private TaskService taskService;
-
-    @Mock
-    private RabbitMessageSender rabbitMessageSender;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        doNothing().when(rabbitMessageSender).sendTaskLogMessage(any());
-    }
 
     //CREATE
     @Test
@@ -53,23 +40,15 @@ public class TaskServiceTest {
         assertTrue(created.getDescription().equals(taskDTO.getDescription()));
         assertTrue(created.getStatus() == Status.NOT_RUNNING);
         assertTrue(created.getAction() == Action.valueOf(taskDTO.getAction()));
+        taskService.delete(created.getId());
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test(expected = BusinessException.class)
     public void testTaskWithNoDescriptionThrowsExceptionWhenCreating() {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setAction("LOG_INFO");
 
         Task createad = taskService.create(taskDTO);
-
-    }
-
-    @Test(expected = DataAccessException.class)
-    public void testTaskWithNoActionThrowsExceptionWhenCreating() {
-        TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setDescription("task desc");
-
-        Task created = taskService.create(taskDTO);
     }
 
     //UPDATE
@@ -85,20 +64,26 @@ public class TaskServiceTest {
         updateTaskDTO.setId(created.getId());
         updateTaskDTO.setStatus("FINISHED");
         updateTaskDTO.setAction("LOG_DEBUG");
+        updateTaskDTO.setDescription("another description");
+
 
         Task updated = taskService.update(updateTaskDTO);
 
         assertTrue(updated.getId().equals(updateTaskDTO.getId()));
         assertTrue(updated.getStatus() == Status.valueOf(updateTaskDTO.getStatus()));
         assertTrue(updated.getAction() == Action.valueOf(updateTaskDTO.getAction()));
+        assertTrue(updated.getDescription().equals(updateTaskDTO.getDescription()));
+
+        taskService.delete(updated.getId());
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test(expected = NotFoundException.class)
     public void testWhenUpdatingANonExistingTaskExceptionIsThrown() {
         UpdateTaskDTO updateTaskDTO = new UpdateTaskDTO();
         updateTaskDTO.setId(new Random().nextLong());
         updateTaskDTO.setStatus("FINISHED");
         updateTaskDTO.setAction("LOG_DEBUG");
+        updateTaskDTO.setDescription("test");
 
         Task updated = taskService.update(updateTaskDTO);
     }
@@ -114,6 +99,7 @@ public class TaskServiceTest {
         Task found = taskService.findById(created.getId());
 
         assertTrue(found.getId().equals(created.getId()));
+        taskService.delete(found.getId());
     }
 
     @Test
@@ -136,11 +122,11 @@ public class TaskServiceTest {
 
         Iterable<Task> all = taskService.findAll();
 
-        assertTrue(Iterables.size(all) == 3);
+        Assert.assertEquals(3, Iterables.size(all));
     }
 
     //DELETE
-    @Test(expected = DataAccessException.class)
+    @Test(expected = NotFoundException.class)
     public void testADeletedEntityIsNotFound() {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setDescription("task 1");
@@ -152,7 +138,7 @@ public class TaskServiceTest {
         Task found = taskService.findById(created.getId());
     }
 
-    @Test(expected = DataAccessException.class)
+    @Test(expected = BusinessException.class)
     public void testDeleteAnAlreadyDeletedEntityExceptionIsThrown() {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setDescription("task 1");
@@ -162,4 +148,4 @@ public class TaskServiceTest {
         taskService.delete(created.getId());
         taskService.delete(created.getId());
     }
-    }
+}
