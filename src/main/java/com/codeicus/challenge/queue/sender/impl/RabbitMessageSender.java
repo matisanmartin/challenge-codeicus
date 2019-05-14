@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class RabbitMessageSender implements MessageSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMessageSender.class);
+    private static final String SENDING_MESSAGE_TO_QUEUE = "Sending message to queue {}";
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -24,6 +25,7 @@ public class RabbitMessageSender implements MessageSender {
 
     @Override
     public void sendTaskLogMessage(TaskLog taskLog) {
+        LOGGER.info(SENDING_MESSAGE_TO_QUEUE, taskLog);
         rabbitTemplate.convertAndSend(queue.getName(), taskLog);
     }
 }

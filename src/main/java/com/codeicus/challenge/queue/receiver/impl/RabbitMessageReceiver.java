@@ -16,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class RabbitMessageReceiver implements MessageReceiver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMessageReceiver.class);
+    private static final String RECEIVED_MESSAGE = "Received message {}";
+    private static final String ERROR_SAVING_ENTITY_TO_DATABASE = "Error saving entity {} to database";
+    private static final String EXCEPTION = "Exception: ";
+
     @Autowired
     private TaskLogRepository taskLogRepository;
 
@@ -23,11 +27,12 @@ public class RabbitMessageReceiver implements MessageReceiver {
     @Transactional
     @Override
     public void receiveTaskLogMessage(TaskLog taskLog) {
+        LOGGER.info(RECEIVED_MESSAGE, taskLog);
         try {
             taskLogRepository.save(taskLog);
         } catch(Exception e) {
-            LOGGER.error("Error saving entity {} to database", taskLog);
-            LOGGER.error("Exception: ", e);
+            LOGGER.error(ERROR_SAVING_ENTITY_TO_DATABASE, taskLog);
+            LOGGER.error(EXCEPTION, e);
             //TODO implementar politica de retry para que el mensaje vuelva al queue si hay una falla al persistir
         }
     }

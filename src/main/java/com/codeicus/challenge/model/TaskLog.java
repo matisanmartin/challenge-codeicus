@@ -76,4 +76,15 @@ public class TaskLog {
     public void setOperation(Operation operation) {
         this.operation = operation;
     }
+
+    @Override
+    public String toString() {
+        return "TaskLog{" +
+                "id=" + id +
+                ", taskId=" + taskId +
+                ", result=" + result +
+                ", operation=" + operation +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

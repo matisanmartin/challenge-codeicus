@@ -72,4 +72,14 @@ public class Task {
     public void setAction(Action action) {
         this.action = action;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", status=" + status +
+                ", description='" + description + '\'' +
+                ", action=" + action +
+                '}';
+    }
 }

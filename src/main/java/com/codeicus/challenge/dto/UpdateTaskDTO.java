@@ -30,4 +30,14 @@ public class UpdateTaskDTO extends TaskDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "UpdateTaskDTO{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", action='" + action + '\'' +
+                '}';
+    }
 }
