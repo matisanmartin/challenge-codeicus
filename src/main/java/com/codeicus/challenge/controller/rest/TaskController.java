@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController(value = "/tasks")
+@RestController
+@RequestMapping("/tasks")
 public class TaskController extends AbstractController {
 
     @Autowired
