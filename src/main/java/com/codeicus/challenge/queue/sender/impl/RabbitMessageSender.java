@@ -1,6 +1,7 @@
-package com.codeicus.challenge.queue;
+package com.codeicus.challenge.queue.sender.impl;
 
 import com.codeicus.challenge.model.TaskLog;
+import com.codeicus.challenge.queue.sender.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @ConditionalOnProperty(value = "queue.rabbit.enabled", havingValue = "true")
-public class RabbitMessageSender {
+public class RabbitMessageSender implements MessageSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMessageSender.class);
 
@@ -21,6 +22,7 @@ public class RabbitMessageSender {
     @Autowired
     private Queue queue;
 
+    @Override
     public void sendTaskLogMessage(TaskLog taskLog) {
         rabbitTemplate.convertAndSend(queue.getName(), taskLog);
     }

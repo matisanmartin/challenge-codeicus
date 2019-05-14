@@ -1,6 +1,6 @@
-package com.codeicus.challenge.controller.advice;
+package com.codeicus.challenge.controller.rest.advice;
 
-import com.codeicus.challenge.controller.TaskController;
+import com.codeicus.challenge.controller.rest.TaskController;
 import com.codeicus.challenge.dto.ErrorResponseDTO;
 import com.codeicus.challenge.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,12 @@ public class TaskControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponseDTO handleBadRequestException(BadRequestException e) {
         return globalExceptionHandler.handleBadRequestException(e);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponseDTO handleGenericException(Exception e) {
+        return globalExceptionHandler.handleGenericException(e);
     }
 
 }

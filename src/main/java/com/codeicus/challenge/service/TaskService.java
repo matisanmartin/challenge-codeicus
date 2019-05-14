@@ -8,7 +8,7 @@ import com.codeicus.challenge.model.Operation;
 import com.codeicus.challenge.model.Result;
 import com.codeicus.challenge.model.Task;
 import com.codeicus.challenge.model.TaskLog;
-import com.codeicus.challenge.queue.RabbitMessageSender;
+import com.codeicus.challenge.queue.sender.MessageSender;
 import com.codeicus.challenge.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private RabbitMessageSender rabbitMessageSender;
+    private MessageSender messageSender;
 
     @Transactional(readOnly = true)
     public Iterable<Task> findAll() {
@@ -56,7 +56,7 @@ public class TaskService {
         LOGGER.info(ATTEMPTING_TO_CREATE_ENTITY, taskDTO);
 
         Task created = saveEntity(new Task(taskDTO), Operation.CREATE);
-        rabbitMessageSender.sendTaskLogMessage(new TaskLog(Optional.of(created), Operation.CREATE, Result.OK, MSG_CREATE_OPERATION_SUCCESSFUL));
+        messageSender.sendTaskLogMessage(new TaskLog(Optional.of(created.getId()), Operation.CREATE, Result.OK, MSG_CREATE_OPERATION_SUCCESSFUL));
         return created;
     }
 
@@ -68,23 +68,22 @@ public class TaskService {
         toUpdate.update(updateTaskDTO);
 
         Task saved = saveEntity(toUpdate, Operation.UPDATE);
-        rabbitMessageSender.sendTaskLogMessage(new TaskLog(Optional.of(saved), Operation.UPDATE, Result.OK, MSG_UPDATE_OPERATION_SUCCESSFUL));
+        messageSender.sendTaskLogMessage(new TaskLog(Optional.of(saved.getId()), Operation.UPDATE, Result.OK, MSG_UPDATE_OPERATION_SUCCESSFUL));
         return saved;
     }
 
     private Task saveEntity(Task toSave, Operation operation) {
-        Optional<Task> taskToSaveInLog = Operation.CREATE == operation ? Optional.empty() : Optional.of(toSave);
+        Optional<Long> taskIdToSaveInLog = Operation.CREATE == operation ? Optional.empty() : Optional.of(toSave.getId());
 
         try {
             return taskRepository.save(toSave);
         } catch(DataAccessException e) {
-            throw new BusinessException(e, new TaskLog(taskToSaveInLog, operation, Result.ERROR, e.getMessage()));
+            throw new BusinessException(e, new TaskLog(taskIdToSaveInLog, operation, Result.ERROR, e.getMessage()));
         } catch(Exception e) {
-            throw new ServerException(e, new TaskLog(taskToSaveInLog, operation, Result.ERROR, e.getMessage()));
+            throw new ServerException(e, new TaskLog(taskIdToSaveInLog, operation, Result.ERROR, e.getMessage()));
         }
 
     }
-
 
     @Transactional
     public void delete(Long id) {
@@ -95,6 +94,6 @@ public class TaskService {
         } catch(Exception e) {
             throw new ServerException(e, new TaskLog(Optional.empty(), Operation.DELETE, Result.ERROR, e.getMessage()));
         }
-        rabbitMessageSender.sendTaskLogMessage(new TaskLog(Optional.empty(), Operation.DELETE, Result.OK, MSG_DELETE_OPERATION_SUCCESSFUL + id));
+        messageSender.sendTaskLogMessage(new TaskLog(Optional.empty(), Operation.DELETE, Result.OK, MSG_DELETE_OPERATION_SUCCESSFUL + id));
     }
 }

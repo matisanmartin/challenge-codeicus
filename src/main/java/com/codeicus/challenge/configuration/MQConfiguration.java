@@ -15,4 +15,5 @@ public class MQConfiguration {
     public Queue queue() {
         return new Queue(taskLogQueueName);
     }
+
 }

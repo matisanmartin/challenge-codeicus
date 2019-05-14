@@ -1,4 +1,4 @@
-package com.codeicus.challenge.controller;
+package com.codeicus.challenge.controller.rest;
 
 import com.codeicus.challenge.dto.TaskDTO;
 import com.codeicus.challenge.dto.UpdateTaskDTO;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController(value = "/tasks")
+@RestController
+@RequestMapping("/tasks")
 public class TaskController extends AbstractController {
 
     @Autowired
