@@ -13,7 +13,7 @@ public class TaskLog {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "task_id")
     private Task task;
 
     @Enumerated(EnumType.STRING)
