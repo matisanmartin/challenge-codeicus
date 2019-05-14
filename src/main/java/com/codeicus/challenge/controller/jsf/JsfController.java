@@ -38,6 +38,9 @@ public class JsfController {
         } catch(BadRequestException e) {
             errorResponseDTO = globalExceptionHandler.handleBadRequestException(e);
             redirect(ERROR_XHTML);
+        } catch(Exception e) {
+            errorResponseDTO = globalExceptionHandler.handleGenericException(e);
+            redirect(ERROR_XHTML);
         }
     }
 

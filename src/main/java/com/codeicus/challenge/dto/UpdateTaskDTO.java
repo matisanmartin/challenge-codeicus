@@ -1,5 +1,7 @@
 package com.codeicus.challenge.dto;
 
+import com.codeicus.challenge.validator.annotation.Match;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -10,7 +12,7 @@ public class UpdateTaskDTO extends TaskDTO {
 
     @NotNull
     @NotEmpty
-    //todo agregar regex
+    @Match(regex = "^(RUNNING|NOT_RUNNING|DELAYED|FINISHED|SCHEDULED)$")
     private String status;
 
     public Long getId() {

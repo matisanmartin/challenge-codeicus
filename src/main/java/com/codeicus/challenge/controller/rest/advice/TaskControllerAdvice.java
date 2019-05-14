@@ -39,4 +39,10 @@ public class TaskControllerAdvice {
         return globalExceptionHandler.handleBadRequestException(e);
     }
 
+    @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponseDTO handleGenericException(Exception e) {
+        return globalExceptionHandler.handleGenericException(e);
+    }
+
 }

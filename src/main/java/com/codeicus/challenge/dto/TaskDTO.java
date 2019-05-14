@@ -1,6 +1,7 @@
 package com.codeicus.challenge.dto;
 
 import com.codeicus.challenge.validator.annotation.Length;
+import com.codeicus.challenge.validator.annotation.Match;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class TaskDTO {
 
     @NotNull
     @NotEmpty
-    //todo agregar regex
+    @Match(regex = "^(LOG_INFO|LOG_ERROR|LOG_DEBUG)$")
     protected String action;
 
     public String getDescription() {

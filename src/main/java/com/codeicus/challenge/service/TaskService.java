@@ -85,7 +85,6 @@ public class TaskService {
 
     }
 
-
     @Transactional
     public void delete(Long id) {
         try {
