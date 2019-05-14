@@ -1,4 +1,4 @@
-package com.codeicus.challenge.controller;
+package com.codeicus.challenge.controller.rest;
 
 import com.codeicus.challenge.exception.BadRequestException;
 import com.codeicus.challenge.model.Operation;

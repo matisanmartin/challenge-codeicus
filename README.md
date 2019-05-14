@@ -10,6 +10,8 @@ Proyecto basado en Spring Boot con Gradle.
 
 * MQ: RabbitMQ
 
+* [Integracion con PrimeFaces basada en el proyecto joinfaces](https://github.com/joinfaces)
+
 * [Docker installation](https://docs.docker.com/install/)
 
 * Intalación MySQL: ```docker run --net=host --name mysql-docker -e MYSQL_ROOT_PASSWORD=admin -d mysql:latest```

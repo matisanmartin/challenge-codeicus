@@ -1,6 +1,6 @@
-package com.codeicus.challenge.controller.advice;
+package com.codeicus.challenge.controller.rest.advice;
 
-import com.codeicus.challenge.controller.TaskController;
+import com.codeicus.challenge.controller.rest.TaskController;
 import com.codeicus.challenge.dto.ErrorResponseDTO;
 import com.codeicus.challenge.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;

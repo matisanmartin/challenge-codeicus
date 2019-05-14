@@ -1,4 +1,4 @@
-package com.codeicus.challenge.controller;
+package com.codeicus.challenge.controller.rest;
 
 import com.codeicus.challenge.dto.TaskDTO;
 import com.codeicus.challenge.dto.UpdateTaskDTO;
