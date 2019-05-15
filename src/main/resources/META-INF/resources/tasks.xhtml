@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+    </h:head>
+
+    <h:body>
+
+        <!-- Create Task -->
+        <h:form>
+            <h:panelGrid columns="2" border = "1" cellpadding = "10" cellspacing = "1">
+
+                <f:facet name="header">
+                    <h:outputLabel>Create a task</h:outputLabel>
+                </f:facet>
+
+                <h:outputLabel>Action</h:outputLabel>
+                <h:selectOneMenu value = "#{jsfTaskController.createTaskDTO.action}">
+                    <f:selectItem itemValue = "LOG_DEBUG" itemLabel = "Log Debug" />
+                    <f:selectItem itemValue = "LOG_ERROR" itemLabel = "Log Error" />
+                    <f:selectItem itemValue = "LOG_INFO" itemLabel = "Log Info" />
+                </h:selectOneMenu>
+                <h:outputLabel>Description</h:outputLabel>
+                <h:inputText value= "#{jsfTaskController.createTaskDTO.description}"/>
+
+                <f:facet name="footer" style = "display:block; text-align:center">
+                    <h:commandButton value="Create task">
+                        <f:ajax event="click" execute="@form" render="tasksTable" listener="#{jsfTaskController.createTask()}"></f:ajax>
+                    </h:commandButton>
+                </f:facet>
+
+            </h:panelGrid>
+
+        </h:form>
+        <br/>
+
+        <!-- Update Task -->
+        <h:form>
+
+            <h:panelGrid columns="2" border = "1" cellpadding = "10" cellspacing = "1">
+
+                <f:facet name="header">
+                    <h:outputLabel>Update a task</h:outputLabel>
+                </f:facet>
+
+                <h:outputLabel>Id</h:outputLabel>
+                <h:inputText readonly="true">"#{jsfTaskController.updateTaskDTO.id}"</h:inputText>
+
+                <h:outputLabel>Action</h:outputLabel>
+                <h:selectOneMenu value = "#{jsfTaskController.updateTaskDTO.action}">
+                    <f:selectItem itemValue = "LOG_DEBUG" itemLabel = "Log Debug" />
+                    <f:selectItem itemValue = "LOG_ERROR" itemLabel = "Log Error" />
+                    <f:selectItem itemValue = "LOG_INFO" itemLabel = "Log Info" />
+                </h:selectOneMenu>
+
+                <h:outputLabel>Status</h:outputLabel>
+                <h:selectOneMenu value = "#{jsfTaskController.updateTaskDTO.status}">
+                    <f:selectItem itemValue = "RUNNING" itemLabel = "Running" />
+                    <f:selectItem itemValue = "NOT_RUNNING" itemLabel = "Not Running" />
+                    <f:selectItem itemValue = "DELAYED" itemLabel = "Delayed" />
+                    <f:selectItem itemValue = "FINISHED" itemLabel = "Finished" />
+                    <f:selectItem itemValue = "SCHEDULED" itemLabel = "Scheduled" />
+                </h:selectOneMenu>
+                <h:outputLabel>Description</h:outputLabel>
+
+                <h:inputText value= "#{jsfTaskController.updateTaskDTO.description}"/>
+
+                <f:facet name="footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <h:commandButton value="Update task">
+                            <f:ajax event="click" execute="@form" render="tasksTable" listener="#{jsfTaskController.updateTask()}"></f:ajax>
+                        </h:commandButton>
+                    </h:panelGroup>
+                </f:facet>
+
+            </h:panelGrid>
+        </h:form>
+        <br/>
+
+        <!-- Find task -->
+        <h:panelGrid columns="2" border = "1" cellpadding = "10" cellspacing = "1">
+            <h:form>
+                <h:commandButton value = "Find task" onclick = "alert('Hello World!');">
+                    <f:ajax event="click" execute="@form" render="tasksTable" listener="#{jsfTaskController.findTaskById()}"></f:ajax>
+                </h:commandButton>
+            </h:form>
+            <h:inputText id="taskIdToSearch" value = "#{jsfTaskController.id}" />
+
+        </h:panelGrid>
+        <br/>
+
+        <!-- Find tasks -->
+
+        <h:form>
+            <h:panelGrid columns="1" border = "1" cellpadding = "10" cellspacing = "1">
+                <h:commandButton value="List tasks">
+                    <f:ajax event="click" execute="@form" render="tasksTable" listener="#{jsfTaskController.findAll()}"></f:ajax>
+                </h:commandButton>
+
+                <h:dataTable id="tasksTable"
+                             value = "#{jsfTaskController.tasks}" var = "task"
+                             border="1"
+                             cellpadding="10"
+                             cellspacing="1">
+
+                    <h:column>
+                        <f:facet name = "header">Id</f:facet>
+                        #{task.id}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name = "header">Status</f:facet>
+                        #{task.status}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name = "header">Description</f:facet>
+                        #{task.description}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name = "header">Action</f:facet>
+                        #{task.action}
+                    </h:column>
+                </h:dataTable>
+            </h:panelGrid>
+
+        </h:form>
+
+    </h:body>
+    </f:view>
+</html>

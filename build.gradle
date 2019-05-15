@@ -21,7 +21,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'mysql:mysql-connector-java:8.0.15'
 	compile 'org.springframework.boot:spring-boot-starter-amqp'
-	compile "org.joinfaces:jsf-spring-boot-starter"
+	compile 'org.joinfaces:jsf-spring-boot-starter'
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'com.h2database:h2:1.4.199'
 	testCompile 'com.google.guava:guava:27.1-jre'
