@@ -14,7 +14,7 @@ public class JsfController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsfTaskController.class);
     protected static final String TASK_XHTML = "/task.xhtml";
-    protected static final String INDEX_XHTML = "/index.xhtml";
+    protected static final String INDEX_XHTML = "/tasks.xhtml";
     protected static final String ERROR_XHTML = "/error.xhtml";
 
     protected ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();

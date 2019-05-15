@@ -29,7 +29,6 @@ public class JsfTaskController extends JsfController {
     public void findAll() {
         accept(p -> {
             tasks = taskService.findAll();
-            redirect(INDEX_XHTML);
         }, null, INVOKING_ACTION_FIND_ALL);
     }
 
