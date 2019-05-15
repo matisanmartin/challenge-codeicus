@@ -1,11 +1,12 @@
 package com.codeicus.challenge.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Optional;
 
 @Entity
 @Table(name = "TASK_LOG")
-public class TaskLog {
+public class TaskLog implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

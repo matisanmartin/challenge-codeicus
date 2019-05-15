@@ -5,11 +5,13 @@ import com.codeicus.challenge.dto.UpdateTaskDTO;
 import com.codeicus.challenge.model.Task;
 import com.codeicus.challenge.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component("jsfTaskController")
+@Scope("session")
 public class JsfTaskController extends JsfController {
 
     private static final String INVOKING_ACTION_FIND_ALL = "Invoking action findAll";
@@ -22,6 +24,7 @@ public class JsfTaskController extends JsfController {
     private UpdateTaskDTO updateTaskDTO = new UpdateTaskDTO();
     private Task task;
     private Iterable<Task> tasks;
+    private Long id;
 
     @Autowired
     private TaskService taskService;
@@ -32,7 +35,7 @@ public class JsfTaskController extends JsfController {
         }, null, INVOKING_ACTION_FIND_ALL);
     }
 
-    public void findTaskById(Long id) {
+    public void findTaskById() {
         accept(p -> {
             task = taskService.findById(p);
             redirect(TASK_XHTML);
@@ -42,6 +45,7 @@ public class JsfTaskController extends JsfController {
     public void createTask() {
         accept(id -> {
             task = taskService.create(createTaskDTO);
+            findAll();
             redirect(TASK_XHTML);
         }, null, INVOKING_ACTION_CREATE_TASK);
 
@@ -50,6 +54,7 @@ public class JsfTaskController extends JsfController {
     public void updateTask() {
         accept(p -> {
             task = taskService.update(updateTaskDTO);
+            findAll();
             redirect(TASK_XHTML);
         }, updateTaskDTO.getId(), INVOKING_ACTION_UPDATE_TASK);
     }
@@ -95,5 +100,13 @@ public class JsfTaskController extends JsfController {
 
     public String getText() {
         return "Hello from Spring: " + LocalDateTime.now().toString();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
