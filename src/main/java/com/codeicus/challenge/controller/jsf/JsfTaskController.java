@@ -15,55 +15,40 @@ import java.time.LocalDateTime;
 public class JsfTaskController extends JsfController {
 
     private static final String INVOKING_ACTION_FIND_ALL = "Invoking action findAll";
-    private static final String INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID = "Invoking action findTaskById with id ";
+    private static final String INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID = "Invoking action findTaskById with idSearch ";
     private static final String INVOKING_ACTION_UPDATE_TASK = "Invoking action updateTask";
     private static final String INVOKING_ACTION_CREATE_TASK = "Invoking action createTask";
-    private static final String INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID = "Invoking action deleteTaskById with id ";
+    private static final String INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID = "Invoking action deleteTaskById with idSearch ";
 
     private TaskDTO createTaskDTO = new TaskDTO();
     private UpdateTaskDTO updateTaskDTO = new UpdateTaskDTO();
     private Task task;
     private Iterable<Task> tasks;
-    private Long id;
+    private Long idSearch;
+    private Long idDelete;
 
     @Autowired
     private TaskService taskService;
 
     public void findAll() {
-        accept(p -> {
-            tasks = taskService.findAll();
-        }, null, INVOKING_ACTION_FIND_ALL);
+        accept(p -> tasks = taskService.findAll(), null, INVOKING_ACTION_FIND_ALL);
     }
 
     public void findTaskById() {
-        accept(p -> {
-            task = taskService.findById(p);
-            redirect(TASK_XHTML);
-        }, id, INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID + id);
+        accept(p -> updateTaskDTO = new UpdateTaskDTO(taskService.findById(p)), idSearch, INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID + idSearch);
     }
 
     public void createTask() {
-        accept(id -> {
-            task = taskService.create(createTaskDTO);
-            findAll();
-            redirect(TASK_XHTML);
-        }, null, INVOKING_ACTION_CREATE_TASK);
+        accept(id -> task = taskService.create(createTaskDTO), null, INVOKING_ACTION_CREATE_TASK);
 
     }
 
     public void updateTask() {
-        accept(p -> {
-            task = taskService.update(updateTaskDTO);
-            findAll();
-            redirect(TASK_XHTML);
-        }, updateTaskDTO.getId(), INVOKING_ACTION_UPDATE_TASK);
+        accept(p -> task = taskService.update(updateTaskDTO), updateTaskDTO.getId(), INVOKING_ACTION_UPDATE_TASK);
     }
 
-    public void deleteTaskById(Long id) {
-        accept(p -> {
-            taskService.delete(p);
-            redirect(INDEX_XHTML);
-        }, id, INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID + id);
+    public void deleteTaskById() {
+        accept(p -> taskService.delete(p), idDelete, INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID + idDelete);
     }
 
     public TaskDTO getCreateTaskDTO() {
@@ -102,11 +87,19 @@ public class JsfTaskController extends JsfController {
         return "Hello from Spring: " + LocalDateTime.now().toString();
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdSearch() {
+        return idSearch;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdSearch(Long idSearch) {
+        this.idSearch = idSearch;
+    }
+
+    public Long getIdDelete() {
+        return idDelete;
+    }
+
+    public void setIdDelete(Long idDelete) {
+        this.idDelete = idDelete;
     }
 }
