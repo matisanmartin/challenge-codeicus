@@ -29,7 +29,7 @@ public class TaskService {
     private static final String MSG_CREATE_OPERATION_SUCCESSFUL = "Create operation successful";
     private static final String ATTEMPTING_TO_UPDATE_ENTITY = "Attempting to update entity {}";
     private static final String ATTEMPTING_TO_CREATE_ENTITY = "Attempting to create entity {}";
-    private static final String FINDING_TASK_BY_ID = "Finding task by id {}";
+    private static final String SEARCHING_TASK_BY_ID = "Searching task by id {}";
     private static final String SEARCHING_FOR_ALL_THE_TASKS = "Searching for all the tasks";
     private static final String MSG_DELETE_OPERATION_SUCCESSFUL = "Successful delete of task with id=";
 
@@ -47,7 +47,7 @@ public class TaskService {
 
     @Transactional(readOnly = true)
     public Task findById(Long id) {
-        LOGGER.info(FINDING_TASK_BY_ID, id);
+        LOGGER.info(SEARCHING_TASK_BY_ID, id);
         return taskRepository.findById(id).orElseThrow(notFoundExceptionSupplier());
     }
 

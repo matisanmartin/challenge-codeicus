@@ -12,104 +12,22 @@
 
     <h:body>
 
-        <!-- Create Task -->
-        <h:form>
-            <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
-
-                <f:facet name="header">
-                    <h:outputLabel>Create a task</h:outputLabel>
-                </f:facet>
-
-                <h:outputLabel>Action</h:outputLabel>
-                <h:selectOneMenu value="#{jsfTaskController.createTaskDTO.action}">
-                    <f:selectItem itemValue="LOG_DEBUG" itemLabel="Log Debug"/>
-                    <f:selectItem itemValue="LOG_ERROR" itemLabel="Log Error"/>
-                    <f:selectItem itemValue="LOG_INFO" itemLabel="Log Info"/>
-                </h:selectOneMenu>
-                <h:outputLabel>Description</h:outputLabel>
-                <h:inputText value="#{jsfTaskController.createTaskDTO.description}"/>
-
-                <f:facet name="footer" style="display:block; text-align:center">
-                    <h:commandButton value="Create task">
-                        <f:ajax event="click" execute="@form" render="tasksTable"
-                                listener="#{jsfTaskController.createTask()}"></f:ajax>
-                    </h:commandButton>
-                </f:facet>
-
-            </h:panelGrid>
-
-        </h:form>
-        <br/>
-
-        <!-- Find Task -->
-
-        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
-
-            <f:facet name="header">
-                <h:outputLabel>Task Management</h:outputLabel>
-            </f:facet>
-
-            <h:form>
-                <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
-                    <h:inputText id="taskIdToSearch" value="#{jsfTaskController.idSearch}"/>
-                    <h:commandButton  value="Search">
-                        <f:ajax event="click" execute="@form" render="tasksTable"
-                                listener="#{jsfTaskController.findTaskById()}"></f:ajax>
-                    </h:commandButton>
-
-
-                    <h:outputLabel>Id</h:outputLabel>
-                    <h:inputText readonly="true">"#{jsfTaskController.updateTaskDTO.id}"</h:inputText>
-
-                    <h:outputLabel>Action</h:outputLabel>
-                    <h:selectOneMenu value="#{jsfTaskController.updateTaskDTO.action}">
-                        <f:selectItem itemValue="LOG_DEBUG" itemLabel="Log Debug"/>
-                        <f:selectItem itemValue="LOG_ERROR" itemLabel="Log Error"/>
-                        <f:selectItem itemValue="LOG_INFO" itemLabel="Log Info"/>
-                    </h:selectOneMenu>
-
-                    <h:outputLabel>Status</h:outputLabel>
-                    <h:selectOneMenu value="#{jsfTaskController.updateTaskDTO.status}">
-                        <f:selectItem itemValue="RUNNING" itemLabel="Running"/>
-                        <f:selectItem itemValue="NOT_RUNNING" itemLabel="Not Running"/>
-                        <f:selectItem itemValue="DELAYED" itemLabel="Delayed"/>
-                        <f:selectItem itemValue="FINISHED" itemLabel="Finished"/>
-                        <f:selectItem itemValue="SCHEDULED" itemLabel="Scheduled"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel>Description</h:outputLabel>
-
-                    <h:inputText value="#{jsfTaskController.updateTaskDTO.description}"/>
-                </h:panelGrid>
-            </h:form>
-            <f:facet name="footer">
-                <h:panelGrid columns="2" cellpadding="5" cellspacing="1">
-                    <h:form>
-                        <h:commandButton value="Update">
-                            <f:ajax event="click" execute="@form" render="tasksTable"
-                                    listener="#{jsfTaskController.updateTask()}"></f:ajax>
-                        </h:commandButton>
-                    </h:form>
-                    <h:form>
-                        <h:commandButton value="Delete">
-                            <f:ajax event="click" execute="@form" render="tasksTable"
-                                    listener="#{jsfTaskController.deleteTaskById()}"></f:ajax>
-                        </h:commandButton>
-                    </h:form>
-                </h:panelGrid>
-            </f:facet>
-
-        </h:panelGrid>
-        <br/>
-
         <!-- Find tasks -->
 
-        <h:form>
             <h:panelGrid columns="1" border="1" cellpadding="10" cellspacing="1">
 
-                <h:commandButton value="List tasks">
-                    <f:ajax event="click" execute="@form" render="tasksTable"
-                            listener="#{jsfTaskController.findAll()}"></f:ajax>
-                </h:commandButton>
+                <h:form>
+                    <h:commandButton value="List tasks">
+                        <f:ajax event="click" execute="@form" render="tasksTable"
+                                listener="#{jsfTaskController.findAll()}"></f:ajax>
+                    </h:commandButton>
+                </h:form>
+                <h:form>
+                    <h:commandButton value="Create Task">
+                        <f:ajax event="click" execute="@form" listener="#{jsfTaskController.redirectCreate}"></f:ajax>
+                    </h:commandButton>
+                </h:form>
+
                 <h:dataTable id="tasksTable"
                              value="#{jsfTaskController.tasks}" var="task"
                              border="1"
@@ -138,7 +56,7 @@
                         <f:facet name="header">View</f:facet>
                         <h:form>
                             <h:commandButton value="View">
-                                <f:ajax event="click" execute="@form" listener="#{jsfTaskController.findTaskById()}"></f:ajax>
+                                <f:ajax event="click" execute="@form" listener="#{jsfTaskController.findTaskById(task.id)}"></f:ajax>
                             </h:commandButton>
                         </h:form>
                     </h:column>
@@ -152,8 +70,6 @@
                     </h:column>
                 </h:dataTable>
             </h:panelGrid>
-        </h:form>
-
     </h:body>
 </f:view>
 </html>

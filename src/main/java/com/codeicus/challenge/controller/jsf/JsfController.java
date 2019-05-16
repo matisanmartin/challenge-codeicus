@@ -13,9 +13,11 @@ import java.util.function.Consumer;
 public class JsfController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsfTaskController.class);
-    protected static final String TASK_XHTML = "/task.xhtml";
-    protected static final String INDEX_XHTML = "/tasks.xhtml";
+    protected static final String TASK_XHTML = "/task_management.xhtml";
+    protected static final String TASKS_XHTML = "/tasks.xhtml";
     protected static final String ERROR_XHTML = "/error.xhtml";
+    protected static final String CREATE_TASK_XHTML = "/task_creation.xhtml";
+    protected static final String SUCCESS_XHTML = "/success.xhtml";
 
     protected ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();
 
@@ -27,7 +29,7 @@ public class JsfController {
         try {
             consumer.accept(id);
         } catch(BusinessException e) {
-            errorResponseDTO =globalExceptionHandler.handleBusinessException(e);
+            errorResponseDTO = globalExceptionHandler.handleBusinessException(e);
             redirect(ERROR_XHTML);
         } catch(ServerException e) {
             errorResponseDTO = globalExceptionHandler.handleServerException(e);
@@ -46,10 +48,19 @@ public class JsfController {
 
     protected void redirect(String s) {
         try {
+            LOGGER.info("Redirecting to {}", s);
             FacesContext.getCurrentInstance().getExternalContext().redirect(s);
         } catch(IOException e) {
             LOGGER.error("IOException when redirecting", e);
             //TODO ver si hay alguna forma de hacer un redirect en caso de excepcion sin que tire IOException
         }
+    }
+
+    public ErrorResponseDTO getErrorResponseDTO() {
+        return errorResponseDTO;
+    }
+
+    public void setErrorResponseDTO(ErrorResponseDTO errorResponseDTO) {
+        this.errorResponseDTO = errorResponseDTO;
     }
 }

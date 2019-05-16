@@ -10,7 +10,13 @@
     </h:head>
 
     <h:body>
-        <h:outputText value="this is a task" />
+        <h:outputText value="Operation successful" />
+        <h:form>
+            <h:commandButton value="Go Back">
+                <f:ajax event="click" execute="@form" render="tasksTable"
+                        listener="#{jsfTaskController.redirectHome()}"></f:ajax>
+            </h:commandButton>
+        </h:form>
     </h:body>
 </f:view>
 </html>

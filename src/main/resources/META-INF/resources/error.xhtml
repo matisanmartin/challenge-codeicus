@@ -10,7 +10,8 @@
     </h:head>
 
     <h:body>
-        <h:outputText value="this is an error" />
+        <h:outputText value="An error ocurred. Description:" />
+        <h:outputText value="#{jsfTaskController.errorResponseDTO}"/>
     </h:body>
 </f:view>
 </html>

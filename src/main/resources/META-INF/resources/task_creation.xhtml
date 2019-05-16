@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+    </h:head>
+
+    <h:body>
+        <!-- Create Task -->
+        <h:form>
+            <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
+
+                <f:facet name="header">
+                    <h:outputLabel>Create a task</h:outputLabel>
+                </f:facet>
+
+                <h:outputLabel>Action</h:outputLabel>
+                <h:selectOneMenu value="#{jsfTaskController.createTaskDTO.action}">
+                    <f:selectItem itemValue="LOG_DEBUG" itemLabel="Log Debug"/>
+                    <f:selectItem itemValue="LOG_ERROR" itemLabel="Log Error"/>
+                    <f:selectItem itemValue="LOG_INFO" itemLabel="Log Info"/>
+                </h:selectOneMenu>
+                <h:outputLabel>Description</h:outputLabel>
+                <h:inputText value="#{jsfTaskController.createTaskDTO.description}"/>
+
+                <f:facet name="footer" style="display:block; text-align:center">
+                    <h:commandButton value="Create task">
+                        <f:ajax event="click" execute="@form" render="tasksTable"
+                                listener="#{jsfTaskController.createTask()}"></f:ajax>
+                    </h:commandButton>
+                    <h:form>
+                        <h:commandButton value="Go Back">
+                            <f:ajax event="click" execute="@form" render="tasksTable"
+                                    listener="#{jsfTaskController.redirectHome()}"></f:ajax>
+                        </h:commandButton>
+                    </h:form>
+                </f:facet>
+
+            </h:panelGrid>
+
+        </h:form>
+        <br/>
+    </h:body>
+</f:view>
+</html>

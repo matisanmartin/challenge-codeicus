@@ -15,10 +15,13 @@ import java.time.LocalDateTime;
 public class JsfTaskController extends JsfController {
 
     private static final String INVOKING_ACTION_FIND_ALL = "Invoking action findAll";
-    private static final String INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID = "Invoking action findTaskById with idSearch ";
+    private static final String INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID = "Invoking action findTaskById with id ";
     private static final String INVOKING_ACTION_UPDATE_TASK = "Invoking action updateTask";
     private static final String INVOKING_ACTION_CREATE_TASK = "Invoking action createTask";
-    private static final String INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID = "Invoking action deleteTaskById with idSearch ";
+    private static final String INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID = "Invoking action deleteTaskById with id ";
+    private static final String INVOKING_ACTION_HOME = "Invoking action redirectHome";
+    private static final String INVOKING_ACTION_REDIRECT_CREATE_TASK = "Invoking action redirectCreateTask";
+
 
     private TaskDTO createTaskDTO = new TaskDTO();
     private UpdateTaskDTO updateTaskDTO = new UpdateTaskDTO();
@@ -35,12 +38,21 @@ public class JsfTaskController extends JsfController {
     }
 
     public void findTaskById() {
-        accept(p -> updateTaskDTO = new UpdateTaskDTO(taskService.findById(p)), idSearch, INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID + idSearch);
+        accept(p -> {
+            updateTaskDTO = new UpdateTaskDTO(taskService.findById(p));
+            redirect(TASK_XHTML);
+        }, idSearch, INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID + idSearch);
+    }
+
+    public void findTaskById(Long id) {
+        accept(p -> {
+            updateTaskDTO = new UpdateTaskDTO(taskService.findById(p));
+            redirect(TASK_XHTML);
+        }, id, INVOKING_ACTION_FIND_TASK_BY_ID_WITH_ID + id);
     }
 
     public void createTask() {
         accept(id -> task = taskService.create(createTaskDTO), null, INVOKING_ACTION_CREATE_TASK);
-
     }
 
     public void updateTask() {
@@ -49,6 +61,19 @@ public class JsfTaskController extends JsfController {
 
     public void deleteTaskById() {
         accept(p -> taskService.delete(p), idDelete, INVOKING_ACTION_DELETE_TASK_BY_ID_WITH_ID + idDelete);
+    }
+
+    public void redirectHome() {
+        accept(p -> {
+            tasks = taskService.findAll();
+            redirect(TASKS_XHTML);
+        }, null, INVOKING_ACTION_HOME);
+    }
+
+    public void redirectCreate() {
+        accept(p -> {
+            redirect(CREATE_TASK_XHTML);
+        }, null, INVOKING_ACTION_REDIRECT_CREATE_TASK);
     }
 
     public TaskDTO getCreateTaskDTO() {

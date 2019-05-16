@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:view>
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+    </h:head>
+
+    <h:body>
+        <!-- Find Task -->
+        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
+
+            <f:facet name="header">
+                <h:outputLabel>Task Management</h:outputLabel>
+            </f:facet>
+
+            <h:form>
+                <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1">
+
+                    <h:outputLabel>Id</h:outputLabel>
+                    <h:inputText readonly="true">"#{jsfTaskController.updateTaskDTO.id}"</h:inputText>
+
+                    <h:outputLabel>Action</h:outputLabel>
+                    <h:selectOneMenu value="#{jsfTaskController.updateTaskDTO.action}">
+                        <f:selectItem itemValue="LOG_DEBUG" itemLabel="Log Debug"/>
+                        <f:selectItem itemValue="LOG_ERROR" itemLabel="Log Error"/>
+                        <f:selectItem itemValue="LOG_INFO" itemLabel="Log Info"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel>Status</h:outputLabel>
+                    <h:selectOneMenu value="#{jsfTaskController.updateTaskDTO.status}">
+                        <f:selectItem itemValue="RUNNING" itemLabel="Running"/>
+                        <f:selectItem itemValue="NOT_RUNNING" itemLabel="Not Running"/>
+                        <f:selectItem itemValue="DELAYED" itemLabel="Delayed"/>
+                        <f:selectItem itemValue="FINISHED" itemLabel="Finished"/>
+                        <f:selectItem itemValue="SCHEDULED" itemLabel="Scheduled"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel>Description</h:outputLabel>
+
+                    <h:inputText value="#{jsfTaskController.updateTaskDTO.description}"/>
+                </h:panelGrid>
+            </h:form>
+            <f:facet name="footer">
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="1">
+                    <h:form>
+                        <h:commandButton value="Update">
+                            <f:ajax event="click" execute="@form" render="tasksTable"
+                                    listener="#{jsfTaskController.updateTask()}"></f:ajax>
+                        </h:commandButton>
+                    </h:form>
+                    <h:form>
+                        <h:commandButton value="Delete">
+                            <f:ajax event="click" execute="@form" render="tasksTable"
+                                    listener="#{jsfTaskController.deleteTaskById()}"></f:ajax>
+                        </h:commandButton>
+                    </h:form>
+                    <h:form>
+                        <h:commandButton value="Go Back">
+                            <f:ajax event="click" execute="@form" render="tasksTable"
+                                    listener="#{jsfTaskController.redirectHome()}"></f:ajax>
+                        </h:commandButton>
+                    </h:form>
+                </h:panelGrid>
+            </f:facet>
+
+        </h:panelGrid>
+        <br/>
+    </h:body>
+</f:view>
+</html>
